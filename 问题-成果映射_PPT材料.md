@@ -12,7 +12,7 @@
 问题（行业需求识别）                    代表性成果（学术/产业）
 ────────────────────────────────────────────────────────────────────
 ① 距离计算是带宽瓶颈                     Falcon（FPGA, ETH Zurich）
-  算术强度 0.75 FLOPs/byte              QTT Tensor Core（GPU, arXiv）
+  算术强度 0.75 FLOPs/byte              QTT Tensor Core（Holonomx INVARIAN）
                                          HERMES（ASIC 存内, IBM）
 ② 候选筛选 >80% 占用无效带宽             SmartANNS（FPGA 近存, Samsung）
   89% DRAM 获取无效（ANSMET 揭示）        ANSMET（DIMM NDP, 清华）
@@ -78,18 +78,18 @@ Falcon 证明了方向正确，但 FPGA 的 10M 规模上限意味着：
 
 ---
 
-#### Slide 2：QTT Tensor Core（arXiv 2026）—— 把 L2 距离变成矩阵乘
+#### Slide 2：QTT Tensor Core（Holonomx INVARIAN, 2026）—— 把 L2 距离变成矩阵乘
 
 | 要素 | 内容 |
 |------|------|
-| **成果类型** | 🎓 学术界/预印本（GPU 仿真，未同行评审）|
+| **成果类型** | 🏢 产业界（Holonomx 创业公司，产品技术演示，非学术论文）|
 | **针对问题** | 距离计算（④）——证明 Tensor Core 在向量搜索中有用 |
 | **核心创新** | QTT 将向量分解为张量序列，距离计算 = 一次 GEMV（Tensor Core）|
 | **关键指标** | **1B 向量 / 单 H100 / 38ms / 100% recall** （serving size 66GB）|
 | | 500M 384D FP16：3.1ms p50，98% recall |
 | | 反常现象：recall 随规模递增（400M→96%，1B→100%）|
 | **精度** | FP16/BF16/FP8/INT8/INT4 |
-| **局限** | arXiv 预印本，未同行评审；仅 384D 验证；高维（768D+）预估 80-150ms |
+| **局限** | **非学术论文**，代码未公开，技术细节有限；仅 384D 验证（Holonomx 演示数据），高维（768D+）预估 80-150ms；Tensor Core 优势在高维因寄存器压力下降 30-50% |
 | **国产化视角** | |
 | ✅ **价值** | L2→矩阵乘映射是一个数学等价变换，不依赖 NVIDIA 硬件——华为昇腾 910B 的 Cube Unit（达芬奇架构）同样支持 FP16/BF16 矩阵乘，理论可执行相同映射；这一思路可能在国产算力上**复现部分优势** |
 | 💡 **建议** | 与华为昇腾团队沟通 CUDA→CANN 迁移可行性——QTT 的核心是一组 GEMV，CANN 的矩阵乘 API 可以直接承接；在昇腾 910B 上复现 38ms@1B 的可行性评估是关键的第一步；若验证成功，可构建完全自主可控的高精度向量搜索方案（昇腾 + 向量数据库） |
@@ -512,7 +512,7 @@ K=1 和 K=100 延迟相同——软件做不到这一点。
 |------|------|------|------|------|
 | 1 | 问题总览 | 算法 × 规模两面夹击 | 概述 | 90s |
 | 2 | 问题① 距离计算 | **Falcon**（ETH Zurich） | 🎓 FPGA | 60s |
-| 3 | 问题① 距离计算 | **QTT Tensor Core**（arXiv） | 🎓 GPU | 60s |
+| 3 | 问题① 距离计算 | **QTT Tensor Core**（Holonomx） | 🏢 GPU | 60s |
 | 4 | 问题① 距离计算 | **IBM HERMES**（IBM） | 🏢 ASIC | 60s |
 | 5 | 问题② 候选筛选 | **SmartANNS**（Samsung） | 🏢 FPGA近存 | 50s |
 | 6 | 问题② 候选筛选 | **ANSMET**（清华） | 🎓 DIMM NDP | 60s |
